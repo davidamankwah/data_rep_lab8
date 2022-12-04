@@ -28,40 +28,51 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
 }
 
+//Define schema 
 const bookSchema = new mongoose.Schema({
   title: String,
   cover: String,
   author: String
 });
 
-const bookModel = mongoose.model('Bookssss', bookSchema);
+const bookModel = mongoose.model('Bookssss', bookSchema); //bookModel allow interaction with database.
 
-app.post('/api/books',(req,res)=>{
+//send books
+app.post('/api/books', (req, res) => {
   console.log(req.body);
 
+  //create records in database
   bookModel.create({
     title: req.body.title,
-    cover:req.body.cover,
-    author:req.body.author
+    cover: req.body.cover,
+    author: req.body.author
   })
-  
+
   res.send('Data Recieved');
 })
 
+//a  route point that returns a book information
 app.get('/api/books', (req, res) => {
-  bookModel.find((error, data)=>{
+  bookModel.find((error, data) => {
     res.json(data);
   })
 })
 
-app.get('/api/book/:id', (req, res)=>{
+//listen request to change book by id
+//override the record
+app.put('/api/book/:id', (req, res) => {
+  console.log("Update: " + req.params.id);
+  console.log(req.body);
+  bookModel.findByIdAndUpdate(req.params.id, req.body, { new: true }, (error, data) => { res.send(data); })
+})
+
+//a  route point that returns a book information by id
+app.get('/api/book/:id', (req, res) => {
   console.log(req.params.id);
-  bookModel.findById(req.params.id,(error,data)=>{
-    res.json(data);
-  })
+  bookModel.findById(req.params.id, (error, data) => { res.json(data); })
 })
 
-
+//connect port 4000
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

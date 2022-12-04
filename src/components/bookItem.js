@@ -1,5 +1,7 @@
+//imports
 import React from "react";
 import Card from 'react-bootstrap/Card';
+import {Link}  from "react-router-dom"; //import link from react router dom
 
 export class BookItem extends React.Component {
     render() {
@@ -19,6 +21,11 @@ export class BookItem extends React.Component {
                     </footer>
                         </blockquote>
                     </Card.Body>
+                    {/* link allows you to edit a book.*/}
+                     {/* _id is identify each book.  */}
+                    {/* Send you where can to edit book */}
+                    {/* like a button to click */}
+                    <Link to={'/edit/'+this.props.book._id} className="btn btn primary">Edit</Link>
                 </Card>
             </div>
         );
